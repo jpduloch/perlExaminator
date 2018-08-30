@@ -19,6 +19,9 @@ sub create_hashstructure_fromfile {
 
   while (my $row = <$yourhandle>) {
     chomp($row);
+
+    $row =~ s/^\s+//;
+
     #saves $header
     if (!defined($actualquestion)) {
       $header .= $row."\n";
@@ -28,16 +31,12 @@ sub create_hashstructure_fromfile {
          $actualquestion = 0;
     }
     #detect qwestion
-    if ($row =~ m/\s*\d./ && defined($actualquestion)){
+    if ($row =~ m/^\d{1,2}.\s/ && defined($actualquestion)){
       $actualquestion = $row;
-    }
-    #detect false answer
-    if ($row =~ m/\[[\s]\]/ && defined($actualquestion)){
+    } elsif ($row =~ m/\[[\s]\]/ && defined($actualquestion)){
       my @actualkey = split(m/\[[\s+]\]\s+/, $row);
       $datHash{$actualquestion}{$actualkey[1]} = 0;
-    }
-    #detect right answer
-    if ($row =~ m/\[[\S]\]/ && defined($actualquestion)){
+    } elsif ($row =~ m/\[[\S]\]/ && defined($actualquestion)){
       my @actualkey = split(m/\[[\S+]\]\s+/, $row);
       $datHash{$actualquestion}{$actualkey[1]} = 1;
     }

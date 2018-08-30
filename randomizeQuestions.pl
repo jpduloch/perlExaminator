@@ -6,6 +6,7 @@ use diagnostics;
 use Data::Dumper qw(Dumper);
 use POSIX qw(strftime);
 use File::Spec;
+use Sort::Naturally qw(nsort);
 
 require '.\common_functions.pl';
 
@@ -30,7 +31,7 @@ require '.\common_functions.pl';
   print $randomizedFileHandle $mastaHeader;
 
   # write QnA
-  for my $qwstion (sort keys %$mastaHash){
+  for my $qwstion (nsort keys %$mastaHash){
     print $randomizedFileHandle "\n ".$qwstion."\n\n";
 
     for my $answer (keys %{%$mastaHash{$qwstion}}){
