@@ -14,71 +14,60 @@ require '.\common_functions.pl';
 
 # Read MasterFiles
   my ($masterfilepath, @responseFilesInput) = @ARGV;
-#  $masterfilepath = 'AssignmentDataFiles\MasterFiles\FHNW_entrance_exam_master_file_2017.txt';
   my ($mastaHeader, $masterExam) = create_hashstructure_fromfile($masterfilepath);
 
   my @responseFiles;
 
   for my $responseFileInput (@responseFilesInput){
       my ($volume,$directories,$fileName) =  File::Spec->splitpath($responseFileInput);
-#      say "$fileName";
-#      say "$directories";
       push @responseFiles, File::Find::Rule->file()
                                   ->name("$fileName")
                                   ->in($directories);
   }
 
-for my $responseFilePath (@responseFiles){
-  my $examFailureMessage = $responseFilePath;
-  my ($studentHeader, $studentExam) = create_hashstructure_fromfile($responseFilePath);
+# Marking the exams
 
-  #print Dumper \%$masterExam;
-  #print Dumper \%$studentExam;
+my %AllExamMarks;
 
-  # Sum of points a students gets
-  # 1 point per correct answer
-  my $points = 0;
+foreach my $studentExamFilePath (@responseFiles){
+  my $examFailureMessage = $studentExamFilePath;
+  my ($studentHeader, $studentExam) = create_hashstructure_fromfile($studentExamFilePath);
+  my @studentExamMarks;
 
   # Interate through the master file and look for the question in the student's exam file
   foreach my $q (nsort keys %$masterExam){
-#    say "\n\n";
-#    say $q;
+    my $point = "-";
+
   	if(exists $studentExam->{$q}){
 
-#      say "master:\n";
-#      say for sort(keys %{$masterExam->{$q}});
-#      say "student:\n";
-#      say for sort(keys %{$studentExam->{$q}});
-#say values %{$studentExam->{$q}};
-#say values %{$masterExam->{$q}};
+        # Check if question is answered
+        if ((sum values  %{$studentExam->{$q}}) > 0) {
 
+          # Check if checked answer is correct answer
+          $point = 1;
+    			foreach my $ans (keys %{$masterExam->{$q}}){
+            if (exists $studentExam->{$q}{$ans}){
+      				if($studentExam->{$q}{$ans} ne $masterExam->{$q}{$ans}){
+      					$point = 0;
+      				}
+            } else {
+              $examFailureMessage .= "\n\t" ."Missing Answer: " .$ans ."\t in $q";
+            }
+    			}
+        }
 
-
-      #my $thesum = sum values $studentExam->{$q};
-      #say $thesum;
-  		# Check if checked answer is correct answer
-      my $counter = 1;
-  			foreach my $ans (keys %{$masterExam->{$q}}){
-
-          if (exists $studentExam->{$q}{$ans}){
-    				if($studentExam->{$q}{$ans} ne $masterExam->{$q}{$ans}){
-    					$counter = 0;
-    				}
-          } else {
-
-            $examFailureMessage .= "\n\t" ."Missing Answer: " .$ans ."\t in $q";
-          }
-  			}
-      $points += $counter;
-    } else{
-            $examFailureMessage .= "\n\t" ."Missing question: ".$q;
-    }
+      } else{
+        $examFailureMessage .= "\n\t" ."Missing question: ".$q;
+      }
+      push @studentExamMarks, $point;
   	}
 
+    # Output message only if a question or answer is missing
     if ($examFailureMessage =~ tr/\n//) {
       say $examFailureMessage;
     }
 
-
-    say $points;
+    $AllExamMarks{$studentExamFilePath} = [@studentExamMarks];
   }
+
+  print Dumper \%AllExamMarks;
