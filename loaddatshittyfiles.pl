@@ -12,8 +12,8 @@ require '.\common_functions.pl';
 
 # Read MasterFiles
   my ($masterfilepath, @responseFilesInput) = @ARGV;
-  $masterfilepath = 'AssignmentDataFiles\MasterFiles\short_exam_master_file.txt';
-#  my ($mastaHeader, $mastaHash) = create_hashstructure_fromfile($masterfilepath);
+  $masterfilepath = 'AssignmentDataFiles\MasterFiles\FHNW_entrance_exam_master_file_2017.txt';
+  my ($mastaHeader, $masterExam) = create_hashstructure_fromfile($masterfilepath);
 
   my @responseFiles;
 
@@ -27,11 +27,25 @@ require '.\common_functions.pl';
   }
 
 for my $responseFilePath (@responseFiles){
-  my ($studentHeader, $studentHash) = create_hashstructure_fromfile($responseFilePath);
+  say $responseFilePath;
+  my ($studentHeader, $studentExam) = create_hashstructure_fromfile($responseFilePath);
 
-#####COMPARE HERE######
+  # Sum of points a students gets
+  # 1 point per correct answer
+  my $points = 0;
 
-
-
-  print Dumper \%$studentHash;
-}
+  # Interate through the master file and look for the question in the student's exam file
+  foreach my $q (keys %$masterExam){
+  	if(exists $studentExam->{$q}){
+  		# Check if checked answer is correct answer
+      my $counter = 1;
+  			foreach my $ans (keys %{$masterExam->{$q}}){
+  				if($studentExam->{$q}{$ans} ne $masterExam->{$q}{$ans}){
+  					$counter = 0;
+  				}
+  			}
+      $points += $counter;
+  		}
+  	}
+    say $points;
+  }
