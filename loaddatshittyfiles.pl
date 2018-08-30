@@ -1,4 +1,4 @@
-# start this with: perl .\loaddatshittyfiles.pl AssignmentDataFiles\MasterFiles\short_exam_master_file.txt AssignmentDataFiles\SampleResponses\*
+# start this with: perl .\loaddatshittyfiles.pl AssignmentDataFiles\MasterFiles\FHNW_entrance_exam_master_file_2017.txt AssignmentDataFiles\SampleResponses\*
 
 use v5.28;
 use strict;
@@ -14,7 +14,7 @@ require '.\common_functions.pl';
 
 # Read MasterFiles
   my ($masterfilepath, @responseFilesInput) = @ARGV;
-  $masterfilepath = 'AssignmentDataFiles\MasterFiles\FHNW_entrance_exam_master_file_2017.txt';
+#  $masterfilepath = 'AssignmentDataFiles\MasterFiles\FHNW_entrance_exam_master_file_2017.txt';
   my ($mastaHeader, $masterExam) = create_hashstructure_fromfile($masterfilepath);
 
   my @responseFiles;
@@ -49,7 +49,8 @@ for my $responseFilePath (@responseFiles){
 #      say for sort(keys %{$masterExam->{$q}});
 #      say "student:\n";
 #      say for sort(keys %{$studentExam->{$q}});
-      say values %{$studentExam->{$q}};
+#say values %{$studentExam->{$q}};
+#say values %{$masterExam->{$q}};
 
 
 
@@ -65,7 +66,7 @@ for my $responseFilePath (@responseFiles){
     				}
           } else {
 
-            $examFailureMessage .= "\n\t" ."Missing Answer: " .$ans;
+            $examFailureMessage .= "\n\t" ."Missing Answer: " .$ans ."\t in $q";
           }
   			}
       $points += $counter;

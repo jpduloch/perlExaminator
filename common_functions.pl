@@ -31,13 +31,13 @@ sub create_hashstructure_fromfile {
          $actualquestion = 0;
     }
     #detect qwestion
-    if ($row =~ m/^\d{1,2}.\s/ && defined($actualquestion)){
+    if ($row =~ m/^\d{1,2}\.\s/ && defined($actualquestion)){
       $actualquestion = $row;
-    } elsif ($row =~ m/\[[\s]\]/ && defined($actualquestion)){
-      my @actualkey = split(m/\[[\s+]\]\s+/, $row);
+    } elsif ($row =~ m/^\[[ ]*\]/ && defined($actualquestion)){
+      my @actualkey = split(m/\]\s+/, $row);
       $datHash{$actualquestion}{$actualkey[1]} = 0;
-    } elsif ($row =~ m/\[[\S]\]/ && defined($actualquestion)){
-      my @actualkey = split(m/\[[\S+]\]\s+/, $row);
+    } elsif ($row =~ m/^\[.+\]/ && defined($actualquestion)){
+      my @actualkey = split(m/\]\s+/, $row);
       $datHash{$actualquestion}{$actualkey[1]} = 1;
     }
   }
