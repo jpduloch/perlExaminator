@@ -40,12 +40,18 @@ for my $responseFilePath (@responseFiles){
   		# Check if checked answer is correct answer
       my $counter = 1;
   			foreach my $ans (keys %{$masterExam->{$q}}){
-  				if($studentExam->{$q}{$ans} ne $masterExam->{$q}{$ans}){
-  					$counter = 0;
-  				}
+          if (exists $studentExam->{$q}{$ans}){
+    				if($studentExam->{$q}{$ans} ne $masterExam->{$q}{$ans}){
+    					$counter = 0;
+    				}
+          } else {
+            #MISSING ANSWER in studentfile
+          }
   			}
       $points += $counter;
-  		}
+    } else{
+      #MISSING Q in studentfile
+    }
   	}
     say $points;
   }
