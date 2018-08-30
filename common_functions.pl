@@ -2,7 +2,6 @@ use v5.28;
 use strict;
 use diagnostics;
 
-
 sub create_hashstructure_fromfile {
   # Subroutine reads the questions and answers from a file.
   # Returns header as string and a hash with
