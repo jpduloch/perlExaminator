@@ -70,4 +70,22 @@ foreach my $studentExamFilePath (@responseFiles){
     $AllExamMarks{$studentExamFilePath} = [@studentExamMarks];
   }
 
-  print Dumper \%AllExamMarks;
+
+# Create an prin statistics
+
+foreach my $key (nsort keys %AllExamMarks){
+  my $correctAnswers = 0;
+  my $answerd = 0;
+
+  foreach my $answer (@{%AllExamMarks{$key}}){
+    if ($answer eq 1) {
+      $correctAnswers++;
+      $answerd++;
+    } elsif ($answer eq 0) {
+      $answerd++;
+    }
+
+  }
+
+  say "$key \t $correctAnswers/$answerd";
+}
