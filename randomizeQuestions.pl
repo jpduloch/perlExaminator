@@ -1,3 +1,5 @@
+# start this with: perl .\randomizeQuestions.pl AssignmentDataFiles\MasterFiles\short_exam_master_file.txt
+
 use v5.28;
 use strict;
 use diagnostics;
@@ -9,7 +11,7 @@ require '.\common_functions.pl';
 
 # Read MasterFiles
   my $masterfilepath = $ARGV[0];
-  $masterfilepath = 'AssignmentDataFiles\MasterFiles\short_exam_master_file.txt';
+#  $masterfilepath = 'AssignmentDataFiles\MasterFiles\short_exam_master_file.txt';
   my ($mastaHeader, $mastaHash) = create_hashstructure_fromfile($masterfilepath);
   my ($volume,$directories,$mastaFileName) =  File::Spec->splitpath( $masterfilepath );
 
