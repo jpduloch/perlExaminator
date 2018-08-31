@@ -118,21 +118,61 @@ foreach my $studentExamFilePath (@responseFiles){
 }
 
 
-# Create an prin statistics
+# Create and print statistics
+my @valAnswered;
+my @valCorrect;
+my ($minAns, $minCor, $maxAns, $maxCor, $sumAns, $sumCor, %freqAns, %freqCor);
 
 foreach my $key (nsort keys %AllExamMarks){
   my $correctAnswers = 0;
-  my $answerd = 0;
+  my $answered = 0;
 
   foreach my $answer (@{$AllExamMarks{$key}}){
     if ($answer eq 1) {
       $correctAnswers++;
-      $answerd++;
+      $answered++;
     } elsif ($answer eq 0) {
-      $answerd++;
+      $answered++;
     }
-
   }
+  
+  # Store values
+  push @valAnswered, $answered;
+  push @valCorrect, $correctAnswers;
+  
+  # Is it max or min amount of questions answered?
+  $minAns = $answered if !defined $minAns || $answered < $minAns;
+  $maxAns = $answered if $answered > $maxAns;
+  
+  # Is it max or min amount of correct answers?
+  $minCor = $correctAnswers if !defined $minCor || $correctAnswers < $minCor;
+  $maxCor = $correctAnswers if $correctAnswers > $maxCor;
+  
+  # Get sum of values to get average later
+  $sumAns += $answered;
+  $sumCor += $correctAnswers;
+  
+  # Track frequency of values
+  $freqAns{$answered}++;
+  $freqCor{$correctAnswers}++;
 
-  say "$key \t $correctAnswers/$answerd";
+  say "$key \t $correctAnswers/$answered";
 }
+
+# Get Averages
+my $avgAns = sprintf("%.2f", $sumAns/@valAnswered);
+my $avgCor = sprintf("%.2f", $sumCor/@valCorrect);
+
+# Output Results
+say "Average number of questions answered.....  $avgAns";
+say "		Minimum:	 	$minAns \t( $freqAns{$minAns} ". ($freqAns{$minAns} == 1 ? "student" : "students"). ")";
+say "		Maximum:	 	$maxAns \t( $freqAns{$maxAns} ". ($freqAns{$maxAns} == 1 ? "student" : "students"). ")";
+
+say "Average number of correct answers........  $avgCor";
+say "		Minimum:	 	$minCor \t( $freqCor{$minCor} ". ($freqCor{$minCor} == 1 ? "student" : "students"). ")";
+say "		Maximum:	 	$maxCor	( $freqCor{$minCor} ". ($freqCor{$minCor} == 1 ? "student" : "students"). ")";
+
+#Below Expectations
+say "Results below expectation:	";
+
+
