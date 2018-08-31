@@ -25,10 +25,10 @@ require '.\common_functions.pl';
   print $randomizedFileHandle $mastaHeader;
 
   # write QnA
-  for my $qwstion (nsort keys %$mastaHash){
+  foreach my $qwstion (nsort keys %$mastaHash){
     print $randomizedFileHandle "\n ".$qwstion."\n\n";
 
-    for my $answer (keys %{%$mastaHash{$qwstion}}){
+    foreach my $answer (keys %{%$mastaHash{$qwstion}}){
       print $randomizedFileHandle "  [ ] ".$answer."\n";
     }
     print $randomizedFileHandle "\n________________________________________________________________________________\n";

@@ -16,7 +16,7 @@ require '.\common_functions.pl';
 
   my @responseFiles;
 
-  for my $responseFileInput (@responseFilesInput){
+  foreach my $responseFileInput (@responseFilesInput){
       my ($volume,$directories,$fileName) =  File::Spec->splitpath($responseFileInput);
       push @responseFiles, File::Find::Rule->file()
                                   ->name("$fileName")
