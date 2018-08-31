@@ -93,9 +93,9 @@ foreach my $studentExamFilePath (@responseFiles){
       } else {
         my @bla;
         foreach my $i (0 .. $#masterSolutions){
-          if ((@masterSolutions[$i] eq @studentSolutions[$i])
-                || (@masterSolutions[$i] eq 0 && @studentSolutions ne 1)
-                || (@masterSolutions[$i] eq 1 && @studentSolutions eq "-")){
+          if (($masterSolutions[$i] eq $studentSolutions[$i])
+                || ($masterSolutions[$i] eq 0 && $studentSolutions[$i] ne 1)
+                || ($masterSolutions[$i] eq 1 && $studentSolutions[$i] eq "-")){
             push @bla, 1;
           } else {
             push @bla, 0;
@@ -103,9 +103,7 @@ foreach my $studentExamFilePath (@responseFiles){
         }
         $point = (all { $_ eq 1 } @bla) ? 1:0;
       }
-      say @masterSolutions;
-      say @studentSolutions;
-      say "\n"
+
     }
 
     push @studentExamMarks, $point;
