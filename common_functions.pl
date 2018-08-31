@@ -5,7 +5,7 @@ use diagnostics;
 # Build Stopwordlist-array
   my @stopWordList;
 
-  open (my $fh, '<', "stop-word-list.txt");
+  open (my $fh, '<', "stopwords.txt");
   chomp(@stopWordList = <$fh>);
   close $fh;
 
