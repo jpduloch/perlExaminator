@@ -121,6 +121,7 @@ foreach my $studentExamFilePath (@responseFiles){
 # Create and print statistics
 my @valAnswered;
 my @valCorrect;
+my %belowExpec;
 my ($minAns, $minCor, $maxAns, $maxCor, $sumAns, $sumCor, %freqAns, %freqCor);
 
 foreach my $key (nsort keys %AllExamMarks){
@@ -139,6 +140,13 @@ foreach my $key (nsort keys %AllExamMarks){
   # Store values
   push @valAnswered, $answered;
   push @valCorrect, $correctAnswers;
+   
+  # Determine if performance was below expectations
+  if($answered < 15){
+	$belowExpec{$key} = "$correctAnswers/$answered (answered < 50% of exam)";
+  }elsif ($correctAnswers < 0.5*$answered){
+	$belowExpec{$key} = "$correctAnswers/$answered (scored < 50%)";
+  }
   
   # Is it max or min amount of questions answered?
   $minAns = $answered if !defined $minAns || $answered < $minAns;
@@ -155,7 +163,7 @@ foreach my $key (nsort keys %AllExamMarks){
   # Track frequency of values
   $freqAns{$answered}++;
   $freqCor{$correctAnswers}++;
-
+  
   say "$key \t $correctAnswers/$answered";
 }
 
@@ -174,5 +182,7 @@ say "		Maximum:	 	$maxCor	( $freqCor{$minCor} ". ($freqCor{$minCor} == 1 ? "stud
 
 #Below Expectations
 say "Results below expectation:	";
-
+foreach my $stud (keys %belowExpec){
+	say "\t $stud 	$belowExpec{$stud}";
+}
 
