@@ -1,26 +1,20 @@
-# start this with: perl .\randomizeQuestions.pl AssignmentDataFiles\MasterFiles\short_exam_master_file.txt
-
 use v5.28;
 use strict;
 use diagnostics;
-use Data::Dumper qw(Dumper);
 use POSIX qw(strftime);
 use File::Spec;
 use Sort::Naturally qw(nsort);
 
 require '.\common_functions.pl';
 
-# Read MasterFiles
+
+# Read masterFiles
   my $masterfilepath = $ARGV[0];
-#  $masterfilepath = 'AssignmentDataFiles\MasterFiles\short_exam_master_file.txt';
   my ($mastaHeader, $mastaHash) = create_hashstructure_fromfile($masterfilepath);
   my ($volume,$directories,$mastaFileName) =  File::Spec->splitpath( $masterfilepath );
 
-  #print $mastaHeader;
-  #print Dumper \%$mastaHash;
 
-# Write new testfile
-# 20170904-132602-IntroPerlEntryExam.txt
+# Write new examfile
   my $datestring = strftime "%Y%m%d-%H%M%S-", localtime;
   my $ramdomizedFileName = $datestring.$mastaFileName;
 
