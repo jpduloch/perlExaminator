@@ -252,8 +252,8 @@ ________________________________________________________________________________
 22. A "reference" in Perl is most like:
 
     [ ] A deep copy of an existing variable or value
-    [X] A mutable pointer to a value or variable, without type-checking
-    [ ] A type-safe immutable pointer to an existing value or variable
+    [ ] A mutable pointer to a value or variable, without type-checking
+    [X ] A type-safe immutable pointer to an existing value or variable
     [ ] An alias (i.e. another name) for an existing variable
     [ ] A link to the documentation for an existing value or variable
 
