@@ -12,7 +12,7 @@ use Sort::Naturally qw(nsort);
 
 require '.\common_functions.pl';
 
-# Read MasterFiles
+# Read master file and student responses
 my ($masterfilepath, @responseFilesInput) = @ARGV;
 my ($mastaHeader, $masterExam) = create_hashstructure_fromfile($masterfilepath);
 
@@ -39,7 +39,7 @@ foreach my $studentExamFilePath (@responseFiles){
     my $point = "-";
     my $studentQuestion;
 
-    # identify question in student exams
+    # Determine is answer is found - if not, notify.
     if (exists $studentExam->{$q}){
       $studentQuestion = $q;
     } else {
@@ -87,7 +87,7 @@ foreach my $studentExamFilePath (@responseFiles){
         }
       }
 
-      # Auswerten
+      # Evaluate answers 
       if (all { $_ ne 1 } @studentSolutions) {
         $point = "-";
       } else {
@@ -128,6 +128,7 @@ foreach my $key (nsort keys %AllExamMarks){
   my $correctAnswers = 0;
   my $answered = 0;
 
+  # Count number of answered and correctly answered questions
   foreach my $answer (@{$AllExamMarks{$key}}){
     if ($answer eq 1) {
       $correctAnswers++;
