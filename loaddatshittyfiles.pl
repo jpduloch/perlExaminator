@@ -162,8 +162,8 @@ foreach my $key (nsort keys %AllExamMarks){
 }
 
 # Get Averages
-my $avgAns = sprintf("%.2f", $sumAns/@valAnswered);
-my $avgCor = sprintf("%.2f", $sumCor/@valCorrect);
+my $avgAns = int($sumAns/@valAnswered);
+my $avgCor = int($sumCor/@valCorrect);
 
 # Output Results
 say "Average number of questions answered.....  $avgAns";
